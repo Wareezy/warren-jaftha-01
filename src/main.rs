@@ -32,6 +32,28 @@ impl LinearRegression {
     }
 }
 
+fn generate_data(n: usize) -> (Tensor<NdArray, 2>, Tensor<NdArray, 2>) {
+    // Set up the device (CPU by default)
+    let device = Device::<NdArray>::default();
+
+    // Create a random number generator
+    let mut rng = rand::thread_rng();
+
+    // Generate a list of random x values between 0 and 10
+    let x: Vec<f32> = (0..n).map(|_| rng.gen_range(0.0..10.0)).collect();
+
+    // Generate y values using the equation y = 2x + 1 with some random noise
+    let y: Vec<f32> = x.iter().map(|&x| 2.0 * x + 1.0 + rng.gen_range(-1.0..1.0)).collect();
+
+    // Convert x and y values from Vec<f32> into tensors
+    let x_tensor = Tensor::<NdArray, 2>::from_data(TensorData::from(x.as_slice()), &device);
+    let y_tensor = Tensor::<NdArray, 2>::from_data(TensorData::from(y.as_slice()), &device);
+
+    // Return the generated x and y tensors
+    (x_tensor, y_tensor)
+}
+
+
 
 fn main() {
     println!("Hello, world!");
