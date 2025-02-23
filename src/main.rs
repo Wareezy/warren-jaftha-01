@@ -120,5 +120,7 @@ fn evaluate(model: &LinearRegression) {
 
 
 fn main() {
-    println!("Hello, world!");
+    train(); // Train the model
+    let model = LinearRegression::new(); // Create a new model instance
+    evaluate(&model);
 }
