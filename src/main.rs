@@ -53,6 +53,16 @@ fn generate_data(n: usize) -> (Tensor<NdArray, 2>, Tensor<NdArray, 2>) {
     (x_tensor, y_tensor)
 }
 
+fn calculate_loss(y_pred: Tensor<NdArray, 2>, y_true: Tensor<NdArray, 2>) -> Tensor<NdArray, 1> {
+    // Find the difference between predicted and actual values
+    let diff = y_pred - y_true;
+
+    // Square the differences to remove negative values
+    let squared_diff = diff.clone().mul(diff);
+
+    // Calculate the average of the squared differences (Mean Squared Error)
+    squared_diff.mean()
+}
 
 
 fn main() {
