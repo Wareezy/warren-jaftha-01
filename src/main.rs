@@ -92,6 +92,33 @@ fn train(){
     println!("Training complete!");
 }
 
+fn evaluate(model: &LinearRegression) {
+    // Generate test data (20 samples)
+    let (x_test, y_test) = generate_data(20);
+
+    // Get model predictions and convert them into a Vec<f32>
+    let y_pred = model.forward(x_test.clone().reshape([20, 1]))
+        .into_data()
+        .convert::<Vec<f32>>();
+
+    // Pair each x_test value with its predicted y value for visualization
+    let data: Vec<(f32, f32)> = x_test.into_data()
+        // Convert x_test tensor into a vector
+        .convert::<Vec<f32>>()
+        .into_iter()
+        // Zip x and y values together
+        .zip(y_pred.into_iter())
+        .collect();
+
+    // Plot the predicted values on a chart
+    // Create a chart of size 100x30
+    Chart::new(100, 30, 0.0, 10.0)
+        // Plot the data as a line graph
+        .lineplot(&Shape::Lines(&data))
+        .display(); // Show the chart
+}
+
+
 fn main() {
     println!("Hello, world!");
 }
