@@ -64,6 +64,33 @@ fn calculate_loss(y_pred: Tensor<NdArray, 2>, y_true: Tensor<NdArray, 2>) -> Ten
     squared_diff.mean()
 }
 
+fn train(){
+    // Set up the device (CPU by default)
+    let device = Device::<NdArray>::default();
+
+    // Create a new linear regression model
+    let mut model = LinearRegression::new();
+
+    // Initialize the Adam optimizer
+    let mut optimizer = AdamConfig::new().init();
+
+    // Generate example training data (10 samples)
+    let (x_train, y_train) = generate_data(10);
+
+    // Train the model for 1000 epochs
+    for _epoch in 0..1000 {
+        // Get predictions from the model
+        let y_pred = model.forward(x_train.clone());
+
+        // Calculate the loss
+        let loss = calculate_loss(y_pred, y_train.clone());
+
+        // Update model weights using backpropagation
+        optimizer.backward_step(&loss);
+    }
+    // Print a message when training is done
+    println!("Training complete!");
+}
 
 fn main() {
     println!("Hello, world!");
